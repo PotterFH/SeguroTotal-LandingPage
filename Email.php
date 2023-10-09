@@ -13,6 +13,7 @@ require 'SMTP.php';
 //Create an instance; passing `true` enables exceptions
 $phpmailer = new PHPMailer(true);
 $email = $_POST['email'];
+$nombre = $_POST['nombre'];
 
 try {
     //Server settings
@@ -32,12 +33,12 @@ try {
     $phpmailer->isHTML(TRUE);
     $phpmailer->CharSet = 'UTF-8';
     $contenido  = "<html>";
-    $contenido .= "<p><strong> ¡Hola! </strong>Gracias por ponerte en contacto con seguroTotal, en breve un agente se pondra en contacto contigo</p>";
+    $contenido .= "<p><strong> ¡Hola " . $nombre ."! </strong>Gracias por ponerte en contacto con seguroTotal, en breve un agente se pondra en contacto contigo</p>";
     $contenido .= "</html>";
     $phpmailer->Body = $contenido;
 
     $phpmailer->send();
-    echo 'Message has been sent';
+    echo json_encode('success');
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    echo json_encode('error');
 }

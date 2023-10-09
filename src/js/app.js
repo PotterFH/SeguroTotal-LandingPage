@@ -75,7 +75,7 @@ function mostrarImagen(id) {
     body.classList.add('fijar-body');
 }
 
-function disabledButtons(){
+function disabledButtons() {
     const btn = document.getElementById('btn-enviar-correo');
     btn.disabled = true;
 }
@@ -87,12 +87,10 @@ function validarEmail() {
     var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
     if (regex.test(email)) {
-        console.log('El email es valido')
-        btn.disabled = false;   
+        btn.disabled = false;
         btn.classList.remove('boton')
         btn.classList.add('boton-si')
-    }else{
-        console.log('El email no es valido')
+    } else {
         btn.disabled = true;
         btn.classList.remove('boton-si')
         btn.classList.add('boton')
@@ -100,13 +98,31 @@ function validarEmail() {
     console.log(email)
 }
 
-function enviarCorreo() {
-    console.log('Enviar correo');
-
+function enviarCorreo() { 
     const email = document.getElementById('emailInput').value;
     const nombre = document.getElementById('nombreInput').value;
 
     console.log(email)
     console.log(nombre)
+
+    const formData = new FormData();
+    formData.append('nombre', nombre)
+    formData.append('email', email)
+
+    fetch('../../Email.php', {
+        method: 'POST',
+        body: formData
+    }).then(respo => respo.json())
+        .then(async data => {
+            switch (data) {
+                case 'success':
+                    console.log('El email se envio')
+                case 'error':
+                    console.log('ocurrio un error')
+            }
+        })
+        .catch(err => {
+            console.log('error')
+        })
 }
 
